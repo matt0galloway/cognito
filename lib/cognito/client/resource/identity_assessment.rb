@@ -16,18 +16,14 @@ class Cognito
 
         many :name_comparisons
         many :phone_comparisons
+        many :ssn_comparisons
+        many :birth_comparisons
+        many :death_comparisons
+        many :address_comparisons
         one :identity_record
 
         attribute :score
       end # IdentityRecordComparison
-
-      class PhoneComparison < self
-        register_type :phone_comparison
-
-        attribute :score
-
-        one :source_record
-      end # PhoneComparison
 
       class NameComparison < self
         register_type :name_comparison
@@ -48,6 +44,94 @@ class Cognito
           end # Component
         end # Components
       end # NameComparison
+
+      class PhoneComparison < self
+        register_type :phone_comparison
+
+        attribute :score
+
+        one :source_record
+      end # PhoneComparison
+
+      class SSNComparison < self
+        register_type :ssn_comparison
+
+        attribute :score
+
+        one :source_record
+
+        class Components
+          include Anima.new(:area, :group, :serial), Adamantium
+
+          class Component
+            include Anima.new(:source, :input, :score)
+
+            class SSN
+              include Concord.new(:ssn), Adamantium
+            end # SSN
+          end # Component
+        end # Components
+      end # SSNComparison
+
+      class BirthComparison < self
+        register_type :birth_comparison
+
+        attribute :score
+
+        one :source_record
+
+        class Components
+          include Anima.new(:year, :month, :day), Adamantium
+
+          class Component
+            include Anima.new(:source, :input, :score)
+
+            class Birth
+              include Concord.new(:birth), Adamantium
+            end # Birth
+          end # Component
+        end # Components
+      end # BirthComparison
+
+      class DeathComparison < self
+        register_type :death_comparison
+
+        attribute :score
+
+        one :source_record
+
+        class Components
+          include Anima.new(:year, :month, :day), Adamantium
+
+          class Component
+            include Anima.new(:source, :input, :score)
+
+            class Death
+              include Concord.new(:death), Adamantium
+            end # Death
+          end # Component
+        end # Components
+      end # DeathComparison
+
+      class AddressComparison < self
+        register_type :address_comparison
+
+        attribute :score
+
+        one :source_record
+
+        class Components
+          include Anima.new(:street, :city, :subdivision, :postal_code, :country_code), Adamantium
+
+          class Component
+            include Anima.new(:source, :input, :score)
+
+            class Address
+              include Concord.new(:address), Adamantium
+            end # Address
+          end # Component
+        end # Components
+      end # AddressComparison
     end # Resource
   end # Client
 end # Cognito
